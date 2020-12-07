@@ -1,0 +1,7 @@
+#pragma once
+
+// Input file lines of the form “#cmakedefine VAR …”
+// will be replaced with either “#define VAR …” or /* #undef VAR */
+// depending on whether VAR is set in CMake to any value
+// not considered a false constant by the if() command.
+#cmakedefine PROJECT_VERSION_PATCH @PROJECT_VERSION_PATCH@
