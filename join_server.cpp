@@ -1,17 +1,19 @@
 #include "boost/asio.hpp"
+#include <boost/regex.hpp>
 #include "boost/algorithm/string/split.hpp"
+#include "boost/algorithm/string.hpp"
 #include <iostream>
 #include <string>
-#include <vector>
+
+#include "db.h"
+
 
 using namespace boost::asio;
 using std::cout;
 using std::endl;
-
 using boost::asio::ip::tcp;
 
-class Session
-        : public std::enable_shared_from_this<Session>
+class Session : public std::enable_shared_from_this<Session>
 {
 public:
     explicit Session(tcp::socket socket)
@@ -34,6 +36,48 @@ private:
                                     if (!ec)
                                     {
                                         std::string str_data = std::string{data_, length};
+
+                                        typedef std::vector< std::string > split_vector_type;
+                                        split_vector_type commands; // #2: Search for tokens
+                                        split(commands, str_data, boost::algorithm::is_any_of("\n") );
+
+
+
+                                        const boost::regex insert_filter("INSERT [AB] [0-9]+ [a-zA-Z]+");
+                                        const boost::regex trucate_filter("TRUNCATE [AB]");
+                                        boost::smatch what;
+
+                                        std::string db_name = "test_database.sqlite";
+                                        DB db(db_name);
+                                        if (db.open_db() != "OK")
+                                        {
+                                            return;
+                                        }
+
+                                        for (auto & command : commands)
+                                        {
+//                                            std::cout << command << std::endl;
+                                            if (boost::regex_match( command, what, insert_filter ))
+                                            {
+                                                cout << db.insert_data(command) << endl;
+                                            }
+                                            else if (boost::regex_match( command, what, trucate_filter))
+                                            {
+                                                cout << db.truncate_table(command) << endl;
+                                            }
+                                            else if (command == "INTERSECTION")
+                                            {
+                                                cout << db.get_intersection() << endl;
+                                            }
+                                            else if (command == "SYMMETRIC_DIFFERENCE")
+                                            {
+                                                cout << db.get_symmetric_difference() << endl;
+                                            }
+                                            else
+                                            {
+                                                cout << "Unknown command: " << command << endl;
+                                            }
+                                        }
                                     }
                                 });
     }
@@ -75,8 +119,6 @@ private:
 
     tcp::acceptor acceptor_;
 };
-
-
 
 
 int main(int argc, char *argv[])

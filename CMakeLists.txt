@@ -9,7 +9,7 @@ endif ()
 
 # Load settings for an external project.
 find_package (Threads REQUIRED)
-find_package (Boost COMPONENTS system REQUIRED)
+find_package (Boost COMPONENTS system regex REQUIRED)
 set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
@@ -19,7 +19,7 @@ set(Boost_USE_STATIC_RUNTIME OFF)
 configure_file(version.h.in version.h)
 
 
-add_executable(join_server join_server.cpp sqlite3.o)
+add_executable(join_server join_server.cpp sqlite3.o db.cpp)
 # Add an executable to the project using the specified source files.
 
 
