@@ -29,5 +29,5 @@ deploy:
   provider: script
   skip_cleanup: true
   script:
-    - curl -T bulk_server-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb -utopp13:$BINTRAY_API_KEY "https://api.bintray.com/content/topp13/otus/bulk_server/$TRAVIS_BUILD_NUMBER/bulk_server-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
+    - curl -T join_server-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb -utopp13:$BINTRAY_API_KEY "https://api.bintray.com/content/topp13/otus/join_server/$TRAVIS_BUILD_NUMBER/join_server-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
 
