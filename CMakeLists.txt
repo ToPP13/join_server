@@ -19,7 +19,7 @@ set(Boost_USE_STATIC_RUNTIME OFF)
 configure_file(version.h.in version.h)
 
 
-add_executable(join_server join_server.cpp sqlite3.o db.cpp)
+add_executable(join_server join_server.cpp sqlite3.o db.cpp )
 # Add an executable to the project using the specified source files.
 
 
@@ -44,7 +44,7 @@ if (MSVC)
     )
 else ()    
     target_compile_options(join_server PRIVATE
-        -Wall -Wextra -pedantic -Werror
+        -Wall -Wextra  -pedantic -Werror
     )
 endif()
 
